@@ -28,7 +28,7 @@ args = argparse.Namespace(
         patience=20,
         seed=42,
         batch_size=20,
-        modelname={MLP-Mixer or ResNet50 or VisionTransformer or CrossViT},
+        modelname={MLP-Mixer or ResNet50 or VisionTransformer or crossvit},
         output_dir={output directory such as ./}
     )
 ```
