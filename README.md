@@ -19,6 +19,7 @@ ClassN/
 
 ```
 For the purposes of this explanation, assume the dataset is prepared in 'sample_dataset/'.
+
 2. Modify the program in the train file to fit the desired execution conditions as follows:
 ```
 args = argparse.Namespace(
@@ -32,7 +33,6 @@ args = argparse.Namespace(
         output_dir={output directory such as ./}
     )
 ```
-3. 
 ## Networks Available for Validation
 - MLP-Mixer
 - Vision Transformer
