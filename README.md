@@ -38,3 +38,8 @@ args = argparse.Namespace(
 - Vision Transformer
 - Resnet 50
 - CrossViT
+
+## Reference
+- https://arxiv.org/abs/2106.04560
+- https://arxiv.org/abs/2109.03810
+- https://arxiv.org/abs/2010.11929
