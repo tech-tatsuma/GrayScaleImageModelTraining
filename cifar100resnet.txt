@@ -1,0 +1,14 @@
+[I 2024-03-09 21:51:17,598] A new study created in memory with name: no-name-04f3888a-369b-4a71-bb2c-a36d8204741d
+-----biginning training-----
+Namespace(epochs=100, learning_rate=5.111623077806188e-05, weight_decay=0.0007208167470585898, patience=20, seed=42, batch_size=64, modelname='ResNet50', output_dir='./ResNet50')
+calculating mean and std...
+loading dataset...
+/home/furuya/GrayScaleImageModelTraining/venv/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/furuya/GrayScaleImageModelTraining/venv/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+Let's use 2 GPUs!
+  0%|          | 0/100 [00:00<?, ?it/s]Epoch 1, Training loss: 4.7188, Validation loss: 4.6863, Validation Accuracy: 0.0090
+  1%|          | 1/100 [01:33<2:34:13, 93.47s/it]Epoch 2, Training loss: 4.6418, Validation loss: 4.6292, Validation Accuracy: 0.0117
+  2%|▏         | 2/100 [03:06<2:32:08, 93.14s/it]Epoch 3, Training loss: 4.6145, Validation loss: 4.6048, Validation Accuracy: 0.0126
+  3%|▎         | 3/100 [04:40<2:31:17, 93.58s/it]

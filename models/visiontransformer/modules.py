@@ -135,7 +135,7 @@ class OutputLayer(nn.Module):  # Class implementing the output layer
         self.net = nn.Sequential(*modules)  # Create a sequential layer
 
         if cls_head:
-            self.to_cls_token = nn.Identity()  ntity layer if class head is present
+            self.to_cls_token = nn.Identity()  # Identity layer if class head is present
 
         self.cls_head = cls_head  # Save the class head flag
         self.num_classes = num_classes  # Save the number of classes

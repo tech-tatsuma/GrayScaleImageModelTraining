@@ -1,0 +1,5 @@
+[I 2024-03-09 21:41:11,562] A new study created in memory with name: no-name-fe6c4d62-d756-4a81-a619-15e104c2f4c1
+-----biginning training-----
+Namespace(epochs=100, learning_rate=2.9809927483013597e-05, weight_decay=1.7190938188110353e-05, patience=20, seed=42, batch_size=64, modelname='VisionTransformer', output_dir='./VisionTransformer')
+Let's use 2 GPUs!
+  0%|          | 0/100 [00:00<?, ?it/s]

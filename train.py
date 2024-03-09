@@ -21,7 +21,7 @@ import time
 from models.mlpmixer import MLPMixer
 from models.resnet50 import CustomResNet50
 from models.visiontransformer.vit import VisionTransformer
-from models.crossvit.crossvit import VisionTransformer as crossvit
+from models.crossvit.crossvit import CrossViT as crossvit
 
 from datasets.dataset import CustomImageDataset, custom_collate_fn
 
@@ -50,12 +50,15 @@ def train(opt, trial=None):
     batch_size = opt.batch_size
     output_dir = opt.output_dir
 
+    print('calculating mean and std...')
+    sys.stdout.flush()
+
     # Load the dataset
     temp_transform = transforms.Compose([transforms.Resize((128, 128)), transforms.ToTensor()])
-    all_dataset = CustomImageDataset(directory='archive', transform=temp_transform)
+    all_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar100/train/', transform=temp_transform)
 
     # Obtain a DataLoader for calculating dataset mean and standard deviation
-    temp_loader = DataLoader(all_dataset, batch_size=256, shuffle=False, num_workers=4, collate_fn=custom_collate_fn)
+    temp_loader = DataLoader(all_dataset, batch_size=256, shuffle=False, num_workers=0, collate_fn=custom_collate_fn)
     # Calculate mean and standard deviation from the dataset
     data = next(iter(temp_loader))[0]
     mean = data.mean([0, 2, 3])
@@ -68,8 +71,11 @@ def train(opt, trial=None):
         transforms.Normalize(mean=mean, std=std)
     ])
 
+    print('loading dataset...')
+    sys.stdout.flush()
+
     # Define transformations including normalization
-    all_dataset = CustomImageDataset(directory='archive', transform=transform)
+    all_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar100/train/', transform=transform)
 
     # Set sizes for training and validation datasets
     train_size = int(0.8 * len(all_dataset))
@@ -79,11 +85,11 @@ def train(opt, trial=None):
     train_dataset, val_dataset = random_split(all_dataset, [train_size, val_size])
 
     # Obtain DataLoaders for training and validation
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=4, collate_fn=custom_collate_fn)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=4, collate_fn=custom_collate_fn)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0, collate_fn=custom_collate_fn)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0, collate_fn=custom_collate_fn)
 
     # Model definition
-    num_classes = 4
+    num_classes = 100
 
     # Model selection based on the option provided
     if opt.modelname == "MLP-Mixer":
@@ -236,15 +242,15 @@ def objective(trial):
         weight_decay=trial.suggest_float('weight_decay', 1e-6, 1e-2, log=True),
         patience=20,
         seed=42,
-        batch_size=20,
-        modelname='crossvit',
-        output_dir='./crossvit'
+        batch_size=64,
+        modelname='ResNet50',
+        output_dir='./ResNet50'
     )
     return train(args, trial)
 
 if __name__ == '__main__':
     # setting the name of the process
-    setproctitle("crossvit")
+    setproctitle("ResNet50")
 
     print('-----biginning training-----')
     start_time = time.time()
