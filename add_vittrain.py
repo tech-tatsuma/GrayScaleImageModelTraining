@@ -56,7 +56,6 @@ def train(opt, trial=None):
     # Load the dataset
     temp_transform = transforms.Compose([transforms.Resize((128, 128)), transforms.ToTensor()])
     all_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar100/train/', transform=temp_transform)
-    print(f'num classes: {all_dataset.get_num_classes()}')
 
     # Obtain a DataLoader for calculating dataset mean and standard deviation
     temp_loader = DataLoader(all_dataset, batch_size=256, shuffle=False, num_workers=0, collate_fn=custom_collate_fn)
@@ -93,23 +92,17 @@ def train(opt, trial=None):
     num_classes = 100
 
     # Model selection based on the option provided
-    if opt.modelname == "MLP-Mixer":
-        model = MLPMixer()
-    elif opt.modelname == "ResNet50":
-        model = CustomResNet50(num_classes=num_classes)
-    elif opt.modelname == "VisionTransformer":
-        model = VisionTransformer(
-            image_size=128,
-            patch_size=16,
-            in_channels=1,
-            embedding_dim=768,
-            num_layers=12,
-            num_heads=12,
-            mlp_ratio=4.0,
-            num_classes=num_classes,
-            hidden_dims=[64, 128, 256])
-    elif opt.modelname == "crossvit":
-        model = crossvit()
+    model = VisionTransformer(
+        image_size=128,
+        patch_size=16,
+        in_channels=1,
+        embedding_dim=768,
+        num_layers=12,
+        num_heads=12,
+        mlp_ratio=4.0,
+        num_classes=num_classes,
+        hidden_dims=[64, 128, 256]
+    )
 
     # Parallelize model if multiple GPUs are available
     if torch.cuda.device_count() > 1:
@@ -118,8 +111,16 @@ def train(opt, trial=None):
 
     # Transfer model to the device
     model.to(device)
+
+    model_state_dict = torch.load(opt.model_path)
+    model.load_state_dict(model_state_dict)
+
+    model = model.load_from_pretrained()
+
+    params_to_update = [param for param in model.parameters() if param.requires_grad]
+
     # Initialize the optimizer
-    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.SGD(params_to_update, lr=learning_rate)
 
     # Initialize parameters for early stopping
     val_loss_min = None
@@ -238,20 +239,20 @@ def train(opt, trial=None):
 
 def objective(trial):
     args = argparse.Namespace(
-        epochs=1000,
+        epochs=100,
         learning_rate=trial.suggest_float('learning_rate', 1e-5, 1e-1, log=True),
         weight_decay=trial.suggest_float('weight_decay', 1e-6, 1e-2, log=True),
         patience=20,
         seed=42,
-        batch_size=128,
-        modelname='VisionTransformer',
-        output_dir='./VisionTransformer'
+        batch_size=64,
+        output_dir='./AddViT',
+        model_path=''
     )
     return train(args, trial)
 
 if __name__ == '__main__':
     # setting the name of the process
-    setproctitle("VisionTransformer")
+    setproctitle("addvittrain")
 
     print('-----biginning training-----')
     start_time = time.time()

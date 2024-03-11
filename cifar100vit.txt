@@ -1,5 +1,10 @@
-[I 2024-03-09 21:41:11,562] A new study created in memory with name: no-name-fe6c4d62-d756-4a81-a619-15e104c2f4c1
+[I 2024-03-11 00:42:32,538] A new study created in memory with name: no-name-96448910-9496-4fd9-a519-a4fbd4130fdb
 -----biginning training-----
-Namespace(epochs=100, learning_rate=2.9809927483013597e-05, weight_decay=1.7190938188110353e-05, patience=20, seed=42, batch_size=64, modelname='VisionTransformer', output_dir='./VisionTransformer')
+Namespace(epochs=1000, learning_rate=0.0002937947176399737, weight_decay=0.0027525165985270625, patience=20, seed=42, batch_size=128, modelname='VisionTransformer', output_dir='./VisionTransformer')
+calculating mean and std...
+num classes: 100
+loading dataset...
 Let's use 2 GPUs!
-  0%|          | 0/100 [00:00<?, ?it/s]
+  0%|          | 0/1000 [00:00<?, ?it/s]Epoch 1, Training loss: 4.5844, Validation loss: 4.5685, Validation Accuracy: 0.0242
+  0%|          | 1/1000 [01:27<24:22:51, 87.86s/it]Epoch 2, Training loss: 4.5529, Validation loss: 4.5465, Validation Accuracy: 0.0238
+  0%|          | 2/1000 [02:56<24:27:01, 88.20s/it]
