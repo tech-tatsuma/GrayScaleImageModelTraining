@@ -2,7 +2,6 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-from torch.optim import Adam
 import torch.nn.functional as F
 from torch.utils.data import random_split
 from torch import nn
@@ -18,10 +17,7 @@ import os
 import optuna
 import time
 
-from models.mlpmixer import MLPMixer
-from models.resnet50 import CustomResNet50
 from models.visiontransformer.vit import VisionTransformer
-from models.crossvit.crossvit import CrossViT as crossvit
 
 from datasets.dataset import CustomImageDataset, custom_collate_fn
 

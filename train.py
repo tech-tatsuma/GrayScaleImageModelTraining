@@ -2,7 +2,6 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-from torch.optim import Adam
 import torch.nn.functional as F
 from torch.utils.data import random_split
 from torch import nn
@@ -54,7 +53,7 @@ def train(opt, trial=None):
     sys.stdout.flush()
 
     # Load the dataset
-    temp_transform = transforms.Compose([transforms.Resize((128, 128)), transforms.ToTensor()])
+    temp_transform = transforms.Compose([transforms.Resize((64, 64)), transforms.ToTensor()])
     all_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar100/train/', transform=temp_transform)
     print(f'num classes: {all_dataset.get_num_classes()}')
 
@@ -243,7 +242,7 @@ def objective(trial):
         weight_decay=trial.suggest_float('weight_decay', 1e-6, 1e-2, log=True),
         patience=20,
         seed=42,
-        batch_size=128,
+        batch_size=64,
         modelname='VisionTransformer',
         output_dir='./VisionTransformer'
     )
