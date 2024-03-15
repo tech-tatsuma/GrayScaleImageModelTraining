@@ -111,12 +111,10 @@ def train(opt, trial=None):
     model_state_dict = torch.load(opt.model_path)
     model.load_state_dict(model_state_dict)
 
-    model = model.load_from_pretrained()
-
     params_to_update = [param for param in model.parameters() if param.requires_grad]
 
     # Initialize the optimizer
-    optimizer = torch.optim.SGD(params_to_update, lr=learning_rate)
+    optimizer = torch.optim.Adam(params_to_update, lr=learning_rate)
 
     # Initialize parameters for early stopping
     val_loss_min = None
@@ -235,14 +233,14 @@ def train(opt, trial=None):
 
 def objective(trial):
     args = argparse.Namespace(
-        epochs=100,
+        epochs=1000,
         learning_rate=trial.suggest_float('learning_rate', 1e-5, 1e-1, log=True),
         weight_decay=trial.suggest_float('weight_decay', 1e-6, 1e-2, log=True),
         patience=20,
         seed=42,
         batch_size=64,
         output_dir='./AddViT',
-        model_path=''
+        model_path='./VisionTransformer/vit.pt'
     )
     return train(args, trial)
 

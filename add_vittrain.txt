@@ -1,0 +1,8 @@
+[I 2024-03-15 15:43:21,260] A new study created in memory with name: no-name-3d15af78-a3e2-44a4-99c6-f9cf42f25093
+-----biginning training-----
+Namespace(epochs=1000, learning_rate=2.327156529343238e-05, weight_decay=0.0025489895392946595, patience=20, seed=42, batch_size=64, output_dir='./AddViT', model_path='./VisionTransformer/vit.pt')
+calculating mean and std...
+loading dataset...
+  0%|          | 0/1000 [00:00<?, ?it/s]Epoch 1, Training loss: 3.6441, Validation loss: 3.4950, Validation Accuracy: 0.1724
+  0%|          | 1/1000 [01:58<32:44:47, 118.01s/it]Epoch 2, Training loss: 3.2451, Validation loss: 3.3199, Validation Accuracy: 0.1980
+  0%|          | 2/1000 [03:57<33:01:08, 119.11s/it]
