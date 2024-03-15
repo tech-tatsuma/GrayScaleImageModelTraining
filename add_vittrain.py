@@ -111,7 +111,10 @@ def train(opt, trial=None):
     model_state_dict = torch.load(opt.model_path)
     model.load_state_dict(model_state_dict)
 
-    params_to_update = [param for param in model.parameters() if param.requires_grad]
+    params_to_update = []
+    for name, param in model.named_parameters():
+        if param.requires_grad and "embedding_layer" not in name:
+            params_to_update.append(param)
 
     # Initialize the optimizer
     optimizer = torch.optim.Adam(params_to_update, lr=learning_rate)
