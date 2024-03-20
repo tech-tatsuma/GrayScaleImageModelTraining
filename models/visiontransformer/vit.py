@@ -16,17 +16,17 @@ class VisionTransformer(nn.Module):
         num_heads=12, # Number of attention heads in each transformer layer
         qkv_bias=True, # Whether to include a bias term in the query, key, value projections
         mlp_ratio=4.0, # Ratio of the hidden dimension of the MLP layers to the embedding dimension
-        use_revised_ffn=False, # Use revised feedforward network
+        use_revised_ffn=True, # Use revised feedforward network
         dropout_rate=0.0, # Dropout rate
         attn_dropout_rate=0.0, # Attention dropout rate
-        use_conv_stem=False, # Use a convolutional stem before patch embedding
+        use_conv_stem=True, # Use a convolutional stem before patch embedding
         use_conv_patch=False, # Use convolutional patches
-        use_linear_patch=True, # Use linear patch projection
-        use_conv_stem_original=False, # Use the original convolutional stem design
+        use_linear_patch=False, # Use linear patch projection
+        use_conv_stem_original=True, # Use the original convolutional stem design
         use_stem_scaled_relu=False, # Use scaled ReLU in the stem
         hidden_dims=None, # Hidden dimensions for the convolutional stem, if any
-        cls_head=True, # Include a classification head
-        num_classes=4, # Number of classes for classification
+        cls_head=False, # Include a classification head
+        num_classes=1000, # Number of classes for classification
         representation_size=None, # Size of the representation layer, if any
     ):
         super(VisionTransformer, self).__init__()

@@ -1,0 +1,21 @@
+[I 2024-03-20 17:34:57,110] A new study created in memory with name: no-name-166737d7-6314-4865-8bb2-bf93fcfb2036
+-----biginning training-----
+Namespace(epochs=1000, learning_rate=0.0017504950299530103, weight_decay=7.300775080034445e-06, patience=20, seed=42, batch_size=64, modelname='VisionTransformer', output_dir='./ViT-cifar10')
+calculating mean and std...
+num classes: 10
+loading dataset...
+  0%|          | 0/1000 [00:00<?, ?it/s]Epoch 1, Training loss: 1.9609, Validation loss: 1.7346, Validation Accuracy: 0.3581
+  0%|          | 1/1000 [06:03<100:52:52, 363.54s/it]Epoch 2, Training loss: 1.6588, Validation loss: 1.5761, Validation Accuracy: 0.4282
+  0%|          | 2/1000 [12:08<101:01:51, 364.44s/it]Epoch 3, Training loss: 1.5109, Validation loss: 1.5130, Validation Accuracy: 0.4588
+  0%|          | 3/1000 [18:13<101:00:56, 364.75s/it]Epoch 4, Training loss: 1.4082, Validation loss: 1.4600, Validation Accuracy: 0.4773
+  0%|          | 4/1000 [24:18<100:57:59, 364.94s/it]Epoch 5, Training loss: 1.3283, Validation loss: 1.3021, Validation Accuracy: 0.5293
+  0%|          | 5/1000 [30:24<100:54:11, 365.08s/it]Epoch 6, Training loss: 1.2604, Validation loss: 1.3059, Validation Accuracy: 0.5355
+  1%|          | 6/1000 [36:28<100:43:13, 364.78s/it]Epoch 7, Training loss: 1.2007, Validation loss: 1.2776, Validation Accuracy: 0.5445
+  1%|          | 7/1000 [42:33<100:38:41, 364.88s/it]Epoch 8, Training loss: 1.1463, Validation loss: 1.2786, Validation Accuracy: 0.5452
+  1%|          | 8/1000 [48:37<100:29:27, 364.68s/it]Epoch 9, Training loss: 1.0953, Validation loss: 1.1540, Validation Accuracy: 0.5948
+  1%|          | 9/1000 [54:43<100:26:36, 364.88s/it]Epoch 10, Training loss: 1.0518, Validation loss: 1.0797, Validation Accuracy: 0.6175
+  1%|          | 10/1000 [1:00:48<100:22:13, 364.98s/it]Epoch 11, Training loss: 1.0095, Validation loss: 1.1256, Validation Accuracy: 0.6025
+  1%|          | 11/1000 [1:06:52<100:12:43, 364.78s/it]Epoch 12, Training loss: 0.9680, Validation loss: 1.1066, Validation Accuracy: 0.6181
+  1%|          | 12/1000 [1:12:56<100:04:19, 364.64s/it]Epoch 13, Training loss: 0.9262, Validation loss: 1.1925, Validation Accuracy: 0.5868
+  1%|▏         | 13/1000 [1:19:01<99:56:41, 364.54s/it] Epoch 14, Training loss: 0.8974, Validation loss: 1.0477, Validation Accuracy: 0.6305
+  1%|▏         | 14/1000 [1:25:06<99:54:19, 364.77s/it]

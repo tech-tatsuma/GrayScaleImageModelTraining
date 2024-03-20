@@ -6,7 +6,7 @@ class CustomResNet50(nn.Module):
     def __init__(self, num_classes=4):
         super(CustomResNet50, self).__init__()
         # Load the ResNet50 model, without using pretrained weights in this case
-        self.model = models.resnet50(pretrained=False)
+        self.model = models.resnet50(weights=None)
         
         # Retrieve the original first convolutional layer
         original_first_layer = self.model.conv1

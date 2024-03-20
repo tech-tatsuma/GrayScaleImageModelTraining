@@ -16,6 +16,8 @@ from setproctitle import setproctitle
 import os
 import optuna
 import time
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 from models.mlpmixer import MLPMixer
 from models.resnet50 import CustomResNet50
@@ -33,6 +35,33 @@ def seed_everything(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
+def plot_confusion_matrix(model, val_loader, device, output_dir, epoch, learning_rate, epochs, patience):
+    model.eval()
+    all_preds = []
+    all_targets = []
+
+    with torch.no_grad():
+        for inputs, labels in val_loader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            outputs = model(inputs)
+
+            _, predicted = torch.max(outputs, 1)
+            all_preds.extend(predicted.view(-1).cpu().numpy())
+            all_targets.extend(labels.view(-1).cpu().numpy())
+
+    # Calculate confusion matrix
+    cm = confusion_matrix(all_targets, all_preds)
+    cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+    # Plot normalized confusion matrix
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cm_normalized, annot=True, fmt=".2f", cmap='Blues')
+    plt.ylabel('Actual')
+    plt.xlabel('Predicted')
+    plt.title('Confusion Matrix')
+    graph_save_name_confusionmatrix = f'{output_dir}/confusionmatrix_lr{learning_rate}_ep{epoch+1}_pa{patience}.png'
+    plt.savefig(graph_save_name_confusionmatrix)
+    plt.close()
 
 def train(opt, trial=None):
     print(opt)
@@ -53,8 +82,8 @@ def train(opt, trial=None):
     sys.stdout.flush()
 
     # Load the dataset
-    temp_transform = transforms.Compose([transforms.Resize((64, 64)), transforms.ToTensor()])
-    all_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar100/train/', transform=temp_transform)
+    temp_transform = transforms.Compose([transforms.Resize((128, 128)), transforms.ToTensor()])
+    all_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar10/train/', transform=temp_transform)
     print(f'num classes: {all_dataset.get_num_classes()}')
 
     # Obtain a DataLoader for calculating dataset mean and standard deviation
@@ -75,7 +104,7 @@ def train(opt, trial=None):
     sys.stdout.flush()
 
     # Define transformations including normalization
-    all_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar100/train/', transform=transform)
+    all_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar10/train/', transform=transform)
 
     # Set sizes for training and validation datasets
     train_size = int(0.8 * len(all_dataset))
@@ -83,13 +112,15 @@ def train(opt, trial=None):
 
     # Split dataset into training and validation datasets
     train_dataset, val_dataset = random_split(all_dataset, [train_size, val_size])
+    test_dataset = CustomImageDataset(directory='/data/furuya/cifar/cifar10/test/', transform=transform)
 
     # Obtain DataLoaders for training and validation
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0, collate_fn=custom_collate_fn)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=0, collate_fn=custom_collate_fn)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=0, collate_fn=custom_collate_fn)
 
     # Model definition
-    num_classes = 100
+    num_classes = all_dataset.get_num_classes()
 
     # Model selection based on the option provided
     if opt.modelname == "MLP-Mixer":
@@ -208,10 +239,12 @@ def train(opt, trial=None):
             val_loss_min = val_loss
             val_loss_min_epoch = epoch
             
-        # Early stopping if no improvement in validation loss for a set number of epochs
-        elif (epoch - val_loss_min_epoch) >= patience:
-            print('Early stopping due to validation loss not improving for {} epochs'.format(patience))
-            break
+        # Early stopping check or last epoch
+        if (epoch - val_loss_min_epoch) >= patience or epoch == epochs - 1:
+            plot_confusion_matrix(model, test_loader, device, output_dir, epoch, learning_rate, epochs, patience)
+            if (epoch - val_loss_min_epoch) >= patience:
+                print('Early stopping due to validation loss not improving for {} epochs'.format(patience))
+                break
 
     # Plot and save the learning curve
     plt.figure(figsize=(15, 5))
@@ -232,7 +265,6 @@ def train(opt, trial=None):
 
     plt.savefig(graph_save_name)
 
-
     return val_loss_min
 
 def objective(trial):
@@ -244,13 +276,13 @@ def objective(trial):
         seed=42,
         batch_size=64,
         modelname='VisionTransformer',
-        output_dir='./VisionTransformer'
+        output_dir='./ViT-cifar10'
     )
     return train(args, trial)
 
 if __name__ == '__main__':
     # setting the name of the process
-    setproctitle("VisionTransformer")
+    setproctitle("ViT")
 
     print('-----biginning training-----')
     start_time = time.time()
